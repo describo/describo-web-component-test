@@ -1,0 +1,59 @@
+{
+    "name": "@describo/crate-builder-component",
+    "version": "0.19.0",
+    "description": "A VueJS component for assembling an RO-Crate",
+    "main": "./src/crate-builder/index.js",
+    "files": [
+        "src/crate-builder"
+    ],
+    "scripts": {
+        "develop": "vite",
+        "build": "npm run build:vue && npm run build:wc",
+        "build:vue": "vite build",
+        "build:wc": "vite --config vite.wc.config.js build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/describo/crate-builder-component.git"
+    },
+    "author": "Marco La Rosa",
+    "license": "GPL-3.0",
+    "bugs": {
+        "url": "https://github.com/describo/crate-builder-component/issues"
+    },
+    "homepage": "https://github.com/describo/crate-builder-component#readme",
+    "dependencies": {
+        "@codemirror/lang-javascript": "^6.1.2",
+        "@codemirror/state": "^6.2.0",
+        "@codemirror/theme-one-dark": "^6.1.0",
+        "@coedl/elastic-query-builder": "^0.3.0",
+        "@describo/data-packs": "^0.10.0",
+        "@element-plus/theme-chalk": "^2.2.16",
+        "@fortawesome/fontawesome-free": "^6.2.1",
+        "@fortawesome/fontawesome-svg-core": "^6.2.1",
+        "codemirror": "^6.0.1",
+        "date-fns": "^2.29.3",
+        "element-plus": "^2.2.28",
+        "leaflet": "^1.9.3",
+        "leaflet-area-select": "^1.0.5",
+        "lodash": "^4.17.21",
+        "tailwindcss": "^3.2.4",
+        "uuid": "^9.0.0",
+        "validator": "^13.7.0",
+        "vue": "^3.2.45",
+        "vue-router": "^4.1.6",
+        "vuex": "^4.1.0"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^4.0.0",
+        "autoprefixer": "^10.4.13",
+        "chance": "^1.1.9",
+        "postcss": "^8.4.20",
+        "process": "^0.11.10",
+        "regenerator-runtime": "^0.13.11",
+        "sass": "^1.57.1",
+        "unplugin-auto-import": "^0.12.1",
+        "unplugin-vue-components": "^0.22.12",
+        "vite": "^4.0.0"
+    }
+}
