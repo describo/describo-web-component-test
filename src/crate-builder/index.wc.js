@@ -1,5 +1,5 @@
 import { defineCustomElement } from "vue";
-import DescriboCrateBuilder from "./Shell.component.ce.vue";
+import DescriboCrateBuilder from "./Shell.component.wc.vue";
 import "./tailwind.css";
 import "@element-plus/theme-chalk/dist/index.css";
 import "./component.css";
