@@ -16,6 +16,7 @@ export default defineConfig({
         },
     },
     plugins: [vue()],
+    // plugins: [vue({ customElement: true})],
     resolve: {
         alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),

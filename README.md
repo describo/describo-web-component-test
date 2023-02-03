@@ -59,10 +59,12 @@ Things to note:
     expected form to my component: ie convert the string to an object then pass that object to
     Shell.component.vue. That way we keep the relevant bits nice and separate from each other. I've
     also renamed it to `wc` from `ce` just to keep the naming consistent.
--   I couldn't see anything in the config anywhere that required the files to be renamed as `ce`. It
-    doesn't seem necessary to me either. Provided you have an entry point to the webcomponent
-    (index.wc.js) then it shouldn't matter what gets pulled in from there as it will all be
-    rewritten when it's bundled anyway (npm run build).
+-   I note the docs talk about naming files with `ce` in order to get styles injected into the
+    shadow root. I admit I don't really understand what they are talking about but I don't feel like
+    this is necessary. Provided you have an entry point to the webcomponent (index.wc.js) then it
+    shouldn't matter what gets pulled in from there as it will all be rewritten when it's bundled
+    anyway (npm run build). But, if it is an issue, you can tell vite to treat all files as custom
+    elements. Edit `vite.wc.config.js` and comment out line 18; uncomment line 19.
 
 ### Cleanups
 
