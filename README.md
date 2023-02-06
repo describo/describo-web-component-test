@@ -6,6 +6,7 @@
     - [Cleanups](#cleanups)
   - [wc-test-app-react](#wc-test-app-react)
   - [Next Steps](#next-steps)
+  - [Changes 2023.02.06](#changes-20230206)
 
 This repo is to try and figure out how to get the crate builder built as a fully functioning web
 component. It is based on the pull request created by @beepsoft @
@@ -105,3 +106,17 @@ https://itnext.io/handling-data-with-web-components-9e7e4a452e6e. I suggest you 
 properties. If you need to stringify / parse things, then the parse should be done inside
 `Shell.component.wc.vue` and the parsed object passed to my code.
 `DON'T do it inside my code as I won't accept the pull request`.
+
+# Changes 2023.02.06
+
+I completely agree with your suggestions and changes.
+
+## Fixed use of compiled style.css in the web component
+
+In [index.wc.js](src%2Fcrate-builder%2Findex.wc.js) I added the compiled `style.css` to the styles array of the DescriboCrateBuilder builder, this way the style is avaialble inside the web component.
+
+## Example of passing non-string values to the web component
+
+My current solution for passing objects and functions to the web component is to do it via [globalThis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis), see [Shell.component.wc.vue](src%2Fcrate-builder%2FShell.component.wc.vue). Users of the web component should pass the name of the function/object as it is set on globalThis (and the users should take care of avoiding name clashes). See [App.tsx](wc-test-app-react%2Fsrc%2FApp.tsx).
+
+From now on translation of web component properties can happen in [Shell.component.wc.vue](src%2Fcrate-builder%2FShell.component.wc.vue) and then passed to [Shell.component.vue](src%2Fcrate-builder%2FShell.component.vue) in the expected format.
