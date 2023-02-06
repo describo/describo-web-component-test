@@ -29,13 +29,34 @@ function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
     );
   }, [ref]);
 
+  // @ts-ignore
+  globalThis.globalFunctionFromReact = (arg) => {
+    return `globalThis.globalFunctionFromReact called with arg: '${arg}'`
+  }
+
+  class SomeClass {
+    name = "This a name from react"
+    age = 99
+
+    nameAndAge() {
+      return `${this.name} + ${this.age}`
+    }
+  }
+
+  // @ts-ignore
+  globalThis.globalObjectFromReact = new SomeClass()
+
+
   return(
+    <>
     <describo-crate-builder
       ref={ref}
       crate={JSON.stringify(crate)}
       profile={JSON.stringify({})}
-      lookup={"aaaaaa"}
+      someGlobalFunction={"globalFunctionFromReact"}
+      someGlobalObject={"globalObjectFromReact"}
     />
+    </>
   )
 }
 
