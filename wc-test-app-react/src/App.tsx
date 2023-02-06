@@ -1,7 +1,8 @@
 /* eslint-disable */
 import metaData from "./data/ro-crate-metadata.json"
-import "./web-component/describo-crate-builder-wc.umd"
-import "./web-component/style.css"
+// Use the version built in the parent.
+import "crate-builder-wc/dist/web-component/describo-crate-builder-wc.umd"
+import "crate-builder-wc/dist/web-component/style.css"
 
 import {useState, useEffect, useRef, useLayoutEffect, DOMAttributes} from "react";
 
@@ -33,6 +34,7 @@ function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
       ref={ref}
       crate={JSON.stringify(crate)}
       profile={JSON.stringify({})}
+      lookup={"aaaaaa"}
     />
   )
 }
@@ -53,7 +55,7 @@ function App() {
         crate={metaData}
         onDataChange={onDataChange}
       />
-      <div className="w-1/2">
+      <div className="w-1/2 bg-green-200">
         <div className="border-b-2 border-gray-700">
           <h1 className="m-2 text-2xl">Preview Crate</h1>
         </div>
