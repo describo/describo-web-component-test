@@ -1,14 +1,14 @@
 <template>
     <div class="flex flex-col">
         <describo-crate-builder
-            :crate="crate"
-            :profile="profile"
-            :lookup="lookup"
-            :readonly="readonly"
-            :enable-context-editor="enableContextEditor"
-            :enable-crate-preview="enableCratePreview"
-            :enable-browse-entities="enableBrowseEntities"
-            :enable-template-save="enableTemplateSave"
+            :crate="data.crate"
+            :profile="data.profile"
+            :lookup="data.lookup"
+            :readonly="data.readonly"
+            :enable-context-editor="data.enableContextEditor"
+            :enable-crate-preview="data.enableCratePreview"
+            :enable-browse-entities="data.enableBrowseEntities"
+            :enable-template-save="data.enableTemplateSave"
         />
         <!-- @beepsoft
 
@@ -21,9 +21,9 @@
         <div class="flex flex-col bg-yellow-200 p-10 mt-10">
             Function and object values passed from react:
             <ul class="list-disc">
-                <li>{{ crate }}</li>
-                <li>{{ profile }}</li>
-                <li>{{ lookup }}</li>
+                <li>{{ data.crate }}</li>
+                <li>{{ data.profile }}</li>
+                <li>{{ data.lookup }}</li>
             </ul>
         </div>
     </div>
@@ -54,31 +54,25 @@ const props = defineProps({
     },
 });
 
-let $this = globalThis[props.config];
-let crate = computed(() => $this.crate);
-let profile = computed(() => $this.profile);
-let lookup = computed(() => $this.lookup);
-let enableContextEditor = computed(() => $this?.config?.enableContextEditor ?? true);
-let enableCratePreview = computed(() => $this?.config?.enableCratePreview ?? true);
-let enableBrowseEntities = computed(() => $this?.config?.enableBrowseEntities ?? true);
-let enableTemplateSave = computed(() => $this?.config?.enableTemplateSave ?? false);
-let readonly = computed(() => $this?.config?.readonly ?? false);
+let data = reactive(init());
 
 watch(
     () => props.configversion,
-    (n, o) => {
-        console.log("new configversion value on $this", n);
-        console.log("old configversion value on $this", o);
-
-        // There must be a better way then doing this all over again :-)
-        $this = globalThis[props.config]
-        crate = computed(() => $this.crate);
-        profile = computed(() => $this.profile);
-        lookup = computed(() => $this.lookup);
-        enableContextEditor = computed(() => $this?.config?.enableContextEditor ?? true);
-        enableCratePreview = computed(() => $this?.config?.enableCratePreview ?? true);
-        enableBrowseEntities = computed(() => $this?.config?.enableBrowseEntities ?? true);
-        enableTemplateSave = computed(() => $this?.config?.enableTemplateSave ?? false);
-        readonly = computed(() => $this?.config?.readonly ?? false);       }
+    () => (data = { ...init() })
 );
+
+function init() {
+    let $this = globalThis[props.config];
+
+    return {
+        crate: $this.crate,
+        profile: $this.profile,
+        lookup: $this.lookup,
+        enableContextEditor: $this?.config?.enableContextEditor ?? true,
+        enableCratePreview: $this?.config?.enableCratePreview ?? true,
+        enableBrowseEntities: $this?.config?.enableBrowseEntities ?? true,
+        enableTemplateSave: $this?.config?.enableTemplateSave ?? false,
+        readonly: $this?.config?.readonly ?? false,
+    };
+}
 </script>
