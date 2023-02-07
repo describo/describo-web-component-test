@@ -30,9 +30,8 @@
 </template>
 
 <script setup>
-import {computed, reactive, watch} from "vue";
+import { computed, watch, reactive } from "vue";
 import DescriboCrateBuilder from "./Shell.component.vue";
-
 
 // get the configuration from globalThis and set it inside this component
 // const $this = globalThis.DescriboCrateBuilderConfiguration;
@@ -44,10 +43,24 @@ import DescriboCrateBuilder from "./Shell.component.vue";
 //  globalThis[props.config] when the "Change crate" button is clicked, but the vue side doesn't change.
 //
 const props = defineProps({
-    config: String
+    config: {
+        type: String,
+        required: true,
+    },
+    configVersion: {
+        type: String,
+        required: true,
+    },
 });
 
-const $this = globalThis[props.config];
+let $this = globalThis[props.config];
+watch(
+    () => props.configVersion,
+    (n, o) => {
+        console.log("new crate value on $this", n);
+        console.log("oldcrate value on $this", o);
+    }
+);
 let crate = computed(() => $this.crate);
 let profile = computed(() => $this.profile);
 let lookup = computed(() => $this.lookup);

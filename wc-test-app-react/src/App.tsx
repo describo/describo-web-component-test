@@ -4,6 +4,7 @@ import metaData from "./data/ro-crate-metadata.json"
 import "crate-builder-wc/dist/web-component/describo-crate-builder-wc.umd"
 
 import {useState, useEffect, useRef, useLayoutEffect, DOMAttributes} from "react";
+import { config } from "process";
 
 type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
 
@@ -30,6 +31,8 @@ function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
     return data
   })
 
+  const [configVersion, setConfigVersion] = useState(new Date().toISOString())
+
   useLayoutEffect(() => {
     const { current }: CustomElement<any> = ref;
 
@@ -49,13 +52,15 @@ function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
     setDescriboConfig(newConfig)
     // @ts-ignore
     globalThis.DescriboCrateBuilderConfiguration = newConfig
+    setConfigVersion(new Date().toISOString())
   }, [crate, profile])
 
   return(
     <>
     <describo-crate-builder
-      ref={ref}
-      config={"DescriboCrateBuilderConfiguration"}
+        ref={ref}
+        config={"DescriboCrateBuilderConfiguration"}
+        configVersion={configVersion}
     />
       <div className="flex flex-col bg-purple-200 p-10 mt-10">
       Contents of globalThis.DescriboCrateBuilderConfiguration in React:
