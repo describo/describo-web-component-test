@@ -7,6 +7,7 @@
   - [wc-test-app-react](#wc-test-app-react)
   - [Next Steps](#next-steps)
   - [Changes 2023.02.06](#changes-20230206)
+  - [Changes 2023.02.07](#changes-20230207)
 
 This repo is to try and figure out how to get the crate builder built as a fully functioning web
 component. It is based on the pull request created by @beepsoft @
@@ -120,3 +121,11 @@ In [index.wc.js](src%2Fcrate-builder%2Findex.wc.js) I added the compiled `style.
 My current solution for passing objects and functions to the web component is to do it via [globalThis](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/globalThis), see [Shell.component.wc.vue](src%2Fcrate-builder%2FShell.component.wc.vue). Users of the web component should pass the name of the function/object as it is set on globalThis (and the users should take care of avoiding name clashes). See [App.tsx](wc-test-app-react%2Fsrc%2FApp.tsx).
 
 From now on translation of web component properties can happen in [Shell.component.wc.vue](src%2Fcrate-builder%2FShell.component.wc.vue) and then passed to [Shell.component.vue](src%2Fcrate-builder%2FShell.component.vue) in the expected format.
+
+# Changes 2023.02.07
+
+1. Removed import of `style.css` in react [App.tsx](wc-test-app-react%2Fsrc%2FApp.tsx) as it is not required.
+
+3. Instead of accessing `globalThis.DescriboCrateBuilderConfiguration` in [Shell.component.wc.vue](src%2Fcrate-builder%2FShell.component.wc.vue) I suggest to pass the name of the config object on `globalThis` via the `config` prop. This way we could theoretically have multiple components on screen with different configs, and it is the responsibility of the caller to avoid name clashes.
+
+4. The React side is now reactive: when you press the "Change crate" button the value of the crate field changes in `globalThis[props.config]`. However, this change is not picked up in [Shell.component.wc.vue](src%2Fcrate-builder%2FShell.component.wc.vue). Can you please take a look at this? 

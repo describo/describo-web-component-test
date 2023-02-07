@@ -21,22 +21,6 @@
         <div class="flex flex-col bg-yellow-200 p-10 mt-10">
             Function and object values passed from react:
             <ul class="list-disc">
-                <!-- Cannot use globalThis here ... -->
-                <!-- <li>
-                    props.someglobalobject: <b>{{ props.someglobalobject }}</b>
-                </li>
-                <li>
-                    props.someglobalobject value: <b>{{ someglobalobjectValue }}</b>
-                </li>
-                <li>
-                    props.someglobalobject.nameAndAge(): <b>{{ nameAndAge }}</b>
-                </li>
-                <li>
-                    props.someglobalfunction: <b>{{ props.someglobalfunction }}</b>
-                </li>
-                <li>
-                    props.someglobalfunction value: <b>{{ someglobalfunctionValue }}</b>
-                </li> -->
                 <li>{{ crate }}</li>
                 <li>{{ profile }}</li>
                 <li>{{ lookup }}</li>
@@ -46,11 +30,24 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import {computed, reactive, watch} from "vue";
 import DescriboCrateBuilder from "./Shell.component.vue";
 
+
 // get the configuration from globalThis and set it inside this component
-const $this = globalThis.DescriboCrateBuilderConfiguration;
+// const $this = globalThis.DescriboCrateBuilderConfiguration;
+//
+// @marcolarosa: I suggest passing the name of the config via a prop. This way we could theoretically have multiple components on
+//  screen with different configs, and it is the responsibility of the caller to avoid name clashes.
+//
+//  Another issue: I don't know if $this is reactive here or not. The React test app now updates the contents of
+//  globalThis[props.config] when the "Change crate" button is clicked, but the vue side doesn't change.
+//
+const props = defineProps({
+    config: String
+});
+
+const $this = globalThis[props.config];
 let crate = computed(() => $this.crate);
 let profile = computed(() => $this.profile);
 let lookup = computed(() => $this.lookup);
@@ -59,27 +56,4 @@ let enableCratePreview = computed(() => $this?.config?.enableCratePreview ?? tru
 let enableBrowseEntities = computed(() => $this?.config?.enableBrowseEntities ?? true);
 let enableTemplateSave = computed(() => $this?.config?.enableTemplateSave ?? false);
 let readonly = computed(() => $this?.config?.readonly ?? false);
-
-// const props = defineProps({
-//     crate: {
-//         type: [String, undefined],
-//     },
-//     profile: {
-//         type: [String, undefined],
-//     },
-
-//     someglobalfunction: {
-//         type: [String, undefined],
-//     },
-//     someglobalobject: {
-//         type: [String, undefined],
-//     },
-// })
-
-// console.log("Shell.component.wc.vue -- props", props)
-
-// // Callback functions and non-record objects with methods can passed via globalThis
-// const someglobalobjectValue = globalThis[props.someglobalobject]
-// const someglobalfunctionValue = globalThis[props.someglobalfunction]("called from web component")
-// const nameAndAge = globalThis[props.someglobalobject].nameAndAge()
 </script>

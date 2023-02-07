@@ -2,7 +2,6 @@
 import metaData from "./data/ro-crate-metadata.json"
 // Use the version built in the parent.
 import "crate-builder-wc/dist/web-component/describo-crate-builder-wc.umd"
-import "crate-builder-wc/dist/web-component/style.css"
 
 import {useState, useEffect, useRef, useLayoutEffect, DOMAttributes} from "react";
 
@@ -19,6 +18,18 @@ declare global {
 function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
   const ref = useRef();
 
+  // Initial setting of globalThis.DescriboCrateBuilderConfiguration
+  const [describoConfig, setDescriboConfig] = useState<any>(() =>{
+    const data = {
+      crate,
+      profile,
+      lookup: {},
+    }
+    // @ts-ignore
+    globalThis.DescriboCrateBuilderConfiguration = data
+    return data
+  })
+
   useLayoutEffect(() => {
     const { current }: CustomElement<any> = ref;
 
@@ -29,33 +40,32 @@ function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
     );
   }, [ref]);
 
-  // @ts-ignore
-  globalThis.globalFunctionFromReact = (arg) => {
-    return `globalThis.globalFunctionFromReact called with arg: '${arg}'`
-  }
-
-  class SomeClass {
-    name = "This a name from react"
-    age = 99
-
-    nameAndAge() {
-      return `${this.name} + ${this.age}`
+  // Update globalThis.DescriboCrateBuilderConfiguration
+  useEffect(() => {
+    console.log("useEffect", crate, profile)
+    const newConfig = {
+      crate, profile, lookup: {}
     }
-  }
-
-  // @ts-ignore
-  globalThis.globalObjectFromReact = new SomeClass()
-
+    setDescriboConfig(newConfig)
+    // @ts-ignore
+    globalThis.DescriboCrateBuilderConfiguration = newConfig
+  }, [crate, profile])
 
   return(
     <>
     <describo-crate-builder
       ref={ref}
-      crate={JSON.stringify(crate)}
-      profile={JSON.stringify({})}
-      someGlobalFunction={"globalFunctionFromReact"}
-      someGlobalObject={"globalObjectFromReact"}
+      config={"DescriboCrateBuilderConfiguration"}
     />
+      <div className="flex flex-col bg-purple-200 p-10 mt-10">
+      Contents of globalThis.DescriboCrateBuilderConfiguration in React:
+        <div>
+        {
+          // @ts-ignore
+          JSON.stringify(globalThis.DescriboCrateBuilderConfiguration)
+        }
+        </div>
+      </div>
     </>
   )
 }
@@ -70,12 +80,20 @@ function App() {
     setData({crate, profile})
   }
 
+  console.log("data", data)
   return (
     <div className="flex">
+      <div>
       <DescriboCrateBuilder
-        crate={metaData}
+        crate={data.crate}
+        profile={data.profile}
         onDataChange={onDataChange}
       />
+        <div>
+          {/*// @ts-ignore*/}
+          <button className="bg-blue-500" onClick={() => setData({crate:{"@context":"Updated crate"}, profile:{name:"Updated profile"}})}>Change crate</button>
+        </div>
+      </div>
       <div className="w-1/2 bg-green-200">
         <div className="border-b-2 border-gray-700">
           <h1 className="m-2 text-2xl">Preview Crate</h1>

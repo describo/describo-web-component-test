@@ -14,6 +14,9 @@ export default defineConfig({
             name: "DescriboCrateBuilderWC",
             fileName: "describo-crate-builder-wc",
         },
+        // Don't minify so there's a chance to debug problems while experimenting
+        minify: false,
+        minifySyntax: false
     },
     plugins: [vue()],
     // plugins: [vue({ customElement: true})],

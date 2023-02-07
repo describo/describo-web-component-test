@@ -15,6 +15,9 @@ config.autoReplaceSvg = "nest";
 //   better to not do it here so that the user of the component can decide when they want the
 //   style to be loaded)
 
+// @marcolarosa: I just forgot to remove from App.tsx. The css must be embedded into the web component like below
+// otherise it would not have effect.
+
 // The trick is to import from the vue build, because it is built before this, so style.css is already available.
 // If we tried to import from dist/web-component/style.css it was not available since we are in the building process
 // and so style.css wouldbe only available at the end of it.
