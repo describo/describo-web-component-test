@@ -47,20 +47,14 @@ const props = defineProps({
         type: String,
         required: true,
     },
-    configVersion: {
+    // WC props are all lowercase
+    configversion: {
         type: String,
         required: true,
     },
 });
 
 let $this = globalThis[props.config];
-watch(
-    () => props.configVersion,
-    (n, o) => {
-        console.log("new crate value on $this", n);
-        console.log("oldcrate value on $this", o);
-    }
-);
 let crate = computed(() => $this.crate);
 let profile = computed(() => $this.profile);
 let lookup = computed(() => $this.lookup);
@@ -69,4 +63,22 @@ let enableCratePreview = computed(() => $this?.config?.enableCratePreview ?? tru
 let enableBrowseEntities = computed(() => $this?.config?.enableBrowseEntities ?? true);
 let enableTemplateSave = computed(() => $this?.config?.enableTemplateSave ?? false);
 let readonly = computed(() => $this?.config?.readonly ?? false);
+
+watch(
+    () => props.configversion,
+    (n, o) => {
+        console.log("new configversion value on $this", n);
+        console.log("old configversion value on $this", o);
+
+        // There must be a better way then doing this all over again :-)
+        $this = globalThis[props.config]
+        crate = computed(() => $this.crate);
+        profile = computed(() => $this.profile);
+        lookup = computed(() => $this.lookup);
+        enableContextEditor = computed(() => $this?.config?.enableContextEditor ?? true);
+        enableCratePreview = computed(() => $this?.config?.enableCratePreview ?? true);
+        enableBrowseEntities = computed(() => $this?.config?.enableBrowseEntities ?? true);
+        enableTemplateSave = computed(() => $this?.config?.enableTemplateSave ?? false);
+        readonly = computed(() => $this?.config?.readonly ?? false);       }
+);
 </script>

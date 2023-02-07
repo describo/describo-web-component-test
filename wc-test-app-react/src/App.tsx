@@ -31,7 +31,7 @@ function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
     return data
   })
 
-  const [configVersion, setConfigVersion] = useState(new Date().toISOString())
+  const [configVersion, setConfigVersion] = useState(1)
 
   useLayoutEffect(() => {
     const { current }: CustomElement<any> = ref;
@@ -52,9 +52,10 @@ function DescriboCrateBuilder({crate, profile, onDataChange}: any) {
     setDescriboConfig(newConfig)
     // @ts-ignore
     globalThis.DescriboCrateBuilderConfiguration = newConfig
-    setConfigVersion(new Date().toISOString())
+    setConfigVersion(configVersion+1)
   }, [crate, profile])
 
+  console.log("configVersion", configVersion)
   return(
     <>
     <describo-crate-builder
